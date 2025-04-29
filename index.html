@@ -4,42 +4,236 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Formulario de registro</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+      }
+
+      h1 {
+        text-align: center;
+        font-size: 2.5rem;
+        color: rgb(98, 64, 131);
+        margin-top: 20px;
+      }
+
+      form {
+        margin: 20px auto;
+        padding: 20px;
+        max-width: 600px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      form h2 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        color: rgb(98, 64, 131);
+      }
+
+      label {
+        display: block;
+        margin-bottom: 15px;
+        font-size: 1rem;
+        color: #333;
+      }
+
+      input, select, textarea {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+
+      input:focus, select:focus, textarea:focus {
+        border-color: rgb(98, 64, 131);
+        outline: none;
+        box-shadow: 0 0 5px rgba(98, 64, 131, 0.5);
+      }
+
+      fieldset {
+        border: none;
+        margin: 20px 0;
+      }
+
+      legend {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+        color: rgb(98, 64, 131);
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      #progress-bar {
+        margin: 20px auto;
+        max-width: 600px;
+        height: 10px;
+        background: #e0e0e0;
+        border-radius: 5px;
+        overflow: hidden;
+      }
+
+      .progress {
+        height: 100%;
+        background: rgb(98, 64, 131);
+        transition: width 0.3s ease;
+      }
+
+      button {
+        padding: 10px 20px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-right: 10px;
+        margin-top: 10px;
+      }
+
+      button[type="button"] {
+        background-color: rgb(98, 64, 131);
+        color: #fff;
+      }
+
+      button[type="button"]:hover {
+        background-color: rgb(80, 50, 110);
+      }
+
+      button[type="submit"] {
+        background-color: #4caf50;
+        color: #fff;
+      }
+
+      button[type="submit"]:hover {
+        background-color: #45a049;
+      }
+
+      button[type="reset"] {
+        background-color: #f44336;
+        color: #fff;
+      }
+
+      button[type="reset"]:hover {
+        background-color: #d32f2f;
+      }
+    </style>
   </head>
   <body>
-    <h1 style="text-align: center; font-size: 3rem; color: rgb(98, 64, 131);">Formulario de registro</h1>
-    <form action="#" method="POST" style="display: flex; flex-direction: column; align-items: center;">
-        <div> 
-        <label for="país-de-residencia" style="font-size: 2rem; color: rgb(230, 151, 106); margin: 10px 0;">País de residencia</label>
-        <select id="país-de-residencia" name="país-de-residencia" required style="padding: 10px; font-size: 1.2rem; width: 300px; border-radius: 5px; border: 1px solid rgb(98, 64, 131);">
-            <option value="disabled selected">Seleccione su país</option>
-            <option value="Argentina">Argentina</option>
-            <option value="Bolivia">Bolivia</option>
-            <option value="Chile">Chile</option>
-            <option value="Colombia">Colombia</option>
-            <option value="Ecuador">Ecuador</option>
-            <option value="Paraguay">Paraguay</option>
-            <option value="Perú">Perú</option>
-            <option value="Uruguay">Uruguay</option>
-            <option value="Venezuela">Venezuela</option>
-            <option value="Otro">Otro</option>
-        </select>
-        <input type="text" id="otro-pais" name="otro-pais" placeholder="Especifique su país" style="display: none; padding: 10px; font-size: 1.2rem; width: 300px; border-radius: 5px; border: 1px solid rgb(98, 64, 131); margin-top: 10px;">
-<script>
-  const select = document.getElementById('país-de-residencia');
-  const otroInput = document.getElementById('otro-pais');
-
-  select.addEventListener('change', function() {
-    if (this.value === 'Otro') {
-      otroInput.style.display = 'block';
-    } else {
-      otroInput.style.display = 'none';
-    }
-  });
-</script>
-        </div>
-        <div>
-            <button type="submit" style="margin-top: 20px; padding: 10px 12px; font-size: 1rem; color:white; background-color: rgb(98, 64, 131); border: none; border-radius: 5px;">Enviar</button>
-        </div>
+    <h1>Formulario de registro</h1>
+    <form id="form-personal" class="form-step">
+      <h2>Datos Personales</h2>
+      <label>Nombre: <input type="text" name="nombre" required></label>
+      <label>Apellidos: <input type="text" name="apellidos" required></label>
+      <label>Email: <input type="email" name="email" required></label>
+      <label>Contraseña: <input type="password" name="password" id="password" required></label>
+      <label>Confirmar Contraseña: <input type="password" name="confirm-password" id="confirm-password" required></label>
+      <span id="password-help"></span>
+      <button type="button" onclick="nextStep()">Siguiente</button>
     </form>
+    <form id="form-entrega" class="form-step hidden">
+      <h2>Dirección de Envío</h2>
+      <label>Calle: <input type="text" name="calle" required></label>
+      <label>Municipio: <input type="text" name="municipio" required></label>
+      <label>Provincia: <input type="text" name="provincia" required></label>
+      <label>Código Postal: <input type="text" name="codigo-postal" required></label>
+      <fieldset>
+        <legend>Horario preferido:</legend>
+        <label><input type="radio" name="horario" value="mañana" required> Mañana</label>
+        <label><input type="radio" name="horario" value="tarde"> Tarde</label>
+      </fieldset>
+      <label>Teléfono: <input type="tel" name="telefono" required></label>
+      <label>País:
+        <select name="pais" required>
+          <option value="">Seleccione...</option>
+          <option value="ES">España</option>
+          <option value="MX">México</option>
+          <option value="AR">Argentina</option>
+        </select>
+      </label>
+      <button type="button" onclick="prevStep()">Anterior</button>
+      <button type="button" onclick="nextStep()">Siguiente</button>
+    </form>
+    <form id="form-suscripcion" class="form-step hidden">
+      <h2>Suscripciones</h2>
+      <label><input type="checkbox" name="boletin" required> Recibir boletín informativo</label>
+      <label><input type="checkbox" name="ofertas" required> Ofertas especiales</label>
+      <label><input type="checkbox" name="terminos" required> Acepto los <a href="#">Términos y Condiciones</a></label>
+      <button type="button" onclick="prevStep()">Anterior</button>
+      <button type="button" onclick="nextStep()">Siguiente</button>
+    </form>
+    <form id="form-pago" class="form-step hidden" method="POST" action="procesar_registro.php">
+      <h2>Datos de Pago</h2>
+      <label>Método de pago:
+        <select name="metodo" required>
+          <option value="">Seleccione...</option>
+          <option value="tarjeta">Tarjeta de crédito</option>
+          <option value="paypal">PayPal</option>
+        </select>
+      </label>
+      <label>Número de Tarjeta: <input type="text" name="tarjeta" required></label>
+      <label>Gastos de envío: <input type="number" name="envio" value="5.00" readonly></label>
+      <button type="button" onclick="prevStep()">Anterior</button>
+      <button type="submit">Enviar Formulario</button>
+      <button type="reset">Borrar Formulario</button>
+    </form>
+    <div id="progress-bar">
+      <div class="progress" style="width: 25%;"></div>
+    </div>
+    <script>
+      let currentStep = 0;
+      const steps = document.querySelectorAll('.form-step');
+      const progressBar = document.querySelector('.progress');
+    
+      function updateProgressBar() {
+        const progressPercentage = ((currentStep + 1) / steps.length) * 100; // Calcula el porcentaje
+        progressBar.style.width = `${progressPercentage}%`; // Actualiza el ancho de la barra
+      }
+    
+      function validateStep() {
+        const currentForm = steps[currentStep];
+        const inputs = currentForm.querySelectorAll('input, select, textarea');
+        let isValid = true;
+    
+        inputs.forEach(input => {
+          if (!input.checkValidity()) {
+            input.style.border = '2px solid red'; // Destaca el campo no válido
+            isValid = false;
+          } else {
+            input.style.border = ''; // Restaura el estilo si es válido
+          }
+        });
+    
+        return isValid;
+      }
+    
+      function nextStep() {
+        if (validateStep()) { // Solo avanza si los campos son válidos
+          if (currentStep < steps.length - 1) {
+            steps[currentStep].classList.add('hidden'); // Oculta el formulario actual
+            currentStep++; // Avanza al siguiente paso
+            steps[currentStep].classList.remove('hidden'); // Muestra el siguiente formulario
+            updateProgressBar(); // Actualiza la barra de progreso
+          }
+        } else {
+          alert('Por favor, completa todos los campos obligatorios antes de continuar.');
+        }
+      }
+    
+      function prevStep() {
+        if (currentStep > 0) {
+          steps[currentStep].classList.add('hidden'); // Oculta el formulario actual
+          currentStep--; // Retrocede al paso anterior
+          steps[currentStep].classList.remove('hidden'); // Muestra el formulario anterior
+          updateProgressBar(); // Actualiza la barra de progreso
+        }
+      }
+    </script>
   </body>
 </html>
